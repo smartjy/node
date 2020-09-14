@@ -13,6 +13,6 @@ node {
   println "current build number => " + env.BUILD_NUMBER
 
   currentBranch = "${scmVars.GIT_BRANCH}"
-  println ${currentBranch}
+  println "current branch =>" + ${currentBranch}
 
 }
