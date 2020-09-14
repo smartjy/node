@@ -9,12 +9,12 @@ import hudson.model.Fingerprint.RangeSet
 
 node {
   def scmVars
-  try {
+  #try {
     scmVars = checkout scm
     println "current build number => " + env.BUILD_NUMBER
 
     currentBranch = "${scmVars.GIT_BRANCH}"
     println ${currentBranch}
 
-  }
+  #}
 }
