@@ -14,5 +14,6 @@ node {
 
   //currentBranch = "${scmVars.GIT_BRANCH}"
   currentBranch = env.BRANCH_NAME
-  println "current branch =>" + currentBranch
+  println "env current branch =>" + env.BRANCH_NAME
+  println "var current branch =>" + currentBranch
 }
