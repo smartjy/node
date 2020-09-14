@@ -12,6 +12,7 @@ node {
   scmVars = checkout scm
   println "current build number => " + env.BUILD_NUMBER
 
-  currentBranch = "${scmVars.GIT_BRANCH}"
+  //currentBranch = "${scmVars.GIT_BRANCH}"
+  currentBranch = "${env.BRANCH_NAME}"
   println "current branch =>" + currentBranch
 }
