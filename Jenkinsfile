@@ -36,7 +36,19 @@ pipeline {
     }
     post {
         success {
-            echo 'success'
+            script {
+                notifySlack("", [
+                    [
+                        title: "Build Success ",
+                        // title_link: "${BUILD_URL}",
+                        // color: "#1E8449",
+                        // author_name: "${gitAuthor}",
+                        // fields: notiFields.flatten(),
+                        // footer: "${JOB_NAME} - ${buildTagName}",
+                        // ts: System.currentTimeMillis() / 1000
+                    ]
+                ]                
+            }
         }
         failure {
             echo 'failure'
