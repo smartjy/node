@@ -37,7 +37,7 @@ pipeline {
                 script {
                     try {
                         dockerclean()
-                    } catch e {
+                    } catch (e) {
                         echo e.getMessage()
                     }
                 }
