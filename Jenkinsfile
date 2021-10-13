@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Clean') {
             steps {
-                cleaning()
+                dockerclean()
             }
         }        
     }
@@ -57,6 +57,6 @@ def dockerizing() {
     }
 }
 
-def cleaning() {
-   sh "docker rmi -f \$( docker images -q --filter=reference=*/${REPOSITORY})" 
+def dockerclean() {
+   sh "docker rmi -f \$(docker images -q -f reference=*/${REPOSITORY} -f reference=${REPOSITORY} )" 
 }
