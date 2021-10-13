@@ -22,23 +22,24 @@ pipeline {
                 dockerBuild()
             }
         }
-
         stage('Push') {
             steps {
                 dockerPush()
             }
-        }        
-        stage('Deploy') {
-            steps {
-                delivery()
+        }
+        post {
+            success {
+                echo 'success'
+            }
+            failure {
+                echo 'failure'
             }
         }
-
-        stage('Clean') {
-            steps {
-                dockerclean()
-            }
-        }        
+        // stage('Clean') {
+        //     steps {
+        //         dockerclean()
+        //     }
+        // }    
     }
 }
 
@@ -70,23 +71,24 @@ def dockerclean() {
 
 def delivery() {
     for (int i = 0; i < serverList.size(); i++) {
-        deploySvr = serverList[i]
+        deliverySvr = serverList[i]
         deliveryCli.add([
-            title: "Command for ${deploySvr} deployment",
+            title: "Command for ${deliverySvr} deployment",
             value: "```kubectl --record set image " +
-                    // "deployment/${deploySvr} " +
+                    // "deployment/${deliverySvr} " +
                     "deployment/dev-sample " +
-                    "${deploySvr}=${REGISTRYURL}/${REPOSITORY}:${BRANCH_NAME}-${BUILD_NUMBER} " +
+                    "${deliverySvr}=${REGISTRYURL}/${REPOSITORY}:${BRANCH_NAME}-${BUILD_NUMBER} " +
                     "--namespace default```",
             short: false
         ])
     }
+    
     notifySlack("", [
         [
             title: "Build Success",
             title_link: "${BUILD_URL}",
             color: "#1E8449",
-            author_name: "",
+            author_name: "test",
             // fields: notiFields.flatten(),
             footer: "${JOB_NAME}",
             ts: System.currentTimeMillis() / 1000
