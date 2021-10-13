@@ -74,7 +74,7 @@ def delivery() {
                     // "deployment/${deploySvr} " +
                     "deployment/dev-sample " +
                     "${deploySvr}=${REGISTRYURL}/${REPOSITORY}:${BRANCH_NAME}-${BUILD_NUMBER} " +
-                    "--namespace default```"
+                    "--namespace default```",
             short: false
         ])
     }
