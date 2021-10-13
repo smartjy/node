@@ -33,7 +33,7 @@ def dockerBuild() {
         def targetSvr = serverList[i]
 
         dir("${targetSvr}") {
-            def buildApp = docker.build('gorela/test', "--no-cache --network host .")
+            def buildApp = docker.build("gorela/test:${BUILD_ID}", "--no-cache --network host .")
         }
     }
 }
