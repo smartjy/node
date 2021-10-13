@@ -1,7 +1,7 @@
 serverList = ['sample']
 pipeline {
     agent {
-        lable 'agent-leo'
+        label 'agent-leo'
     }
 
     stages {
