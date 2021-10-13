@@ -21,7 +21,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dir('sample'){
+                    dir("sample"){
                         app = docker.build(REPOSITORY, "--no-cache --network host .")
                     }
                 }
