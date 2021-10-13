@@ -20,22 +20,24 @@ pipeline {
         // }
         stage('Build') {
             steps {
-                script {
-                    dir("sample"){
-                        app = docker.build(REPOSITORY, "--no-cache --network host .")
-                        buildList.add(app)
-                    }
-                }
+                dockerBuild()
+                // script {
+                //     dir("sample"){
+                //         app = docker.build(REPOSITORY, "--no-cache --network host .")
+                //         buildList.add(app)
+                //     }
+                // }
             }
         }
 
         stage('Push') {
             steps {
-                script {
-                    docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
-                        buildList[0].push("${BRANCH_NAME}-${BUILD_NUMBER}")
-                    }
-                }
+                dockerPush()
+                // script {
+                //     docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
+                //         buildList[0].push("${BRANCH_NAME}-${BUILD_NUMBER}")
+                //     }
+                // }
             }
         }        
         stage('Deploy') {
@@ -54,15 +56,22 @@ pipeline {
     }
 }
 
-def dockerizing() {
+def dockerBuild() {
     for ( int i = 0; i < serverList.size(); i++) {
-        def targetSvr = serverList[i]
+        targetSvr = serverList[i]
 
         // docker build 
         dir("${targetSvr}") {
-            buildApp = docker.build(REPOSITORY, "--no-cache --network host .")
+            app = docker.build(REPOSITORY, "--no-cache --network host .")
+            buildList.add(app)
         }
-        // docker push 
+    }
+}
+
+def dockerPush() {
+    for (int i = 0; i < buildList.size(); i++) {
+        buildApp = buildList[i]
+        // docker push
         docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
             buildApp.push("${BRANCH_NAME}-${BUILD_NUMBER}")
         }
