@@ -30,7 +30,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh 'curl -s -d "payload={\"text\":\"slack webhook\"}" "https://hooks.slack.com/services/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"'
+                    sh "curl -s -d \"payload={\"text\":\"slack webhook\"}\" \"https://hooks.slack.com/services/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\""
                 }
             }
         }        
