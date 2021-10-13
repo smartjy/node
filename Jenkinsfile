@@ -18,7 +18,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dockerBuild()
+                    dockerizing()
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
     }
 }
 
-def dockerBuild() {
+def dockerizing() {
     for ( int i = 0; i < serverList.size(); i++) {
         def targetSvr = serverList[i]
 
@@ -45,6 +45,7 @@ def dockerBuild() {
         }
         // docker push 
         docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
+            buildApp.push(BRANCH_NAME)
         }
     }
 }
