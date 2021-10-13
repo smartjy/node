@@ -27,20 +27,21 @@ pipeline {
                 dockerPush()
             }
         }
-        post {
-            success {
-                echo 'success'
-            }
-            failure {
-                echo 'failure'
-            }
-        }
+
         // stage('Clean') {
         //     steps {
         //         dockerclean()
         //     }
         // }    
     }
+    post {
+        success {
+            echo 'success'
+        }
+        failure {
+            echo 'failure'
+        }
+    }    
 }
 
 def dockerBuild() {
