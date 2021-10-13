@@ -5,8 +5,10 @@ pipeline {
     }
 
     environment {
+        REPOSITORY = 'gorela/test'
         REGISTRYURL = '653983231979.dkr.ecr.ap-northeast-2.amazonaws.com'
         REGISTRYCREDENTIAL = 'ecr:ap-northeast-2:aws-ecr'
+        
     }
 
     stages {
@@ -32,6 +34,15 @@ pipeline {
                 echo 'Deploying....'
             }
         }
+        stage('Clean') {
+            steps {
+                try {
+                    sh "docker rmi -f \$( docker images -q --filter=reference=*/${REPOSITORY})"
+                } catch (e) {
+                    echo e.getMessage()
+                }
+            }
+        }        
     }
 }
 
@@ -41,8 +52,7 @@ def dockerizing() {
 
         // docker build 
         dir("${targetSvr}") {
-            // buildApp = docker.build("gorela/test:${BUILD_ID}", "--no-cache --network host .")
-            buildApp = docker.build("gorela/test", "--no-cache --network host .")
+            buildApp = docker.build(REPOSITORY, "--no-cache --network host .")
         }
         // docker push 
         docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
