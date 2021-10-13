@@ -1,13 +1,15 @@
 serverList = ['sample']
 pipeline {
-    agent any
+    agent {
+        lable 'agent-leo'
+    }
 
     stages {
-        stage('env') {
-            steps {
-                sh 'printenv'
-            }
-        }
+        // stage('env') {
+        //     steps {
+        //         sh 'printenv'
+        //     }
+        // }
         stage('Build') {
             steps {
                 script {
