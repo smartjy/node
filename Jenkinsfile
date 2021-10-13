@@ -148,7 +148,7 @@ def delivery() {
 }
 
 def notifySlack(text, attachments) {
-    def slackURL = 'https://hooks.slack.com/services/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'
+    def slackURL = 'https://hooks.slack.com/services/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'
     def jenkinsIcon = 'https://avatars.slack-edge.com/2019-05-08/628787263668_7a9ee5e84462be745c7a_48.jpg'
 
     def payload = JsonOutput.toJson([text: text,
