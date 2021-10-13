@@ -2,6 +2,11 @@ pipeline {
     agent any
 
     stages {
+        stage('env') {
+            steps {
+                println env
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building..'
