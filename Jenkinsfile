@@ -1,5 +1,5 @@
-def serverList = ['sample']
-def buildList = []
+serverList = ['sample']
+buildList = []
 pipeline {
     agent {
         label 'agent-leo'
