@@ -1,10 +1,6 @@
+serverList = ['sample']
 pipeline {
-    agent {
-        dockerfile {
-            dir './sample'
-            filename 'Dockerfile'
-        }
-    }
+    agent any
 
     stages {
         stage('env') {
@@ -14,7 +10,9 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo 'Building..'
+                script {
+                    dockerBuild()
+                }
             }
         }
         stage('Test') {
@@ -26,6 +24,16 @@ pipeline {
             steps {
                 echo 'Deploying....'
             }
+        }
+    }
+}
+
+def dockerBuild() {
+    for ( int i = 0; i < serverList.size(); i++) {
+        def targetSvr = serverList[i]
+
+        dir("${targetSvr}") {
+            def buildApp = docker.build('gorela/test', "--no-cache --network host .")
         }
     }
 }
