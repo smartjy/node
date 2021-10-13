@@ -1,5 +1,5 @@
-serverList = ['sample']
-app = [:]
+def serverList = ['sample']
+def buildList = []
 pipeline {
     agent {
         label 'agent-leo'
@@ -20,22 +20,14 @@ pipeline {
         // }
         stage('Build') {
             steps {
-                // script {
+                script {
                     dir("sample"){
                         app = docker.build(REPOSITORY, "--no-cache --network host .")
-                    }
-                // }
-            }
-        }
-        stage('Test') {
-            steps {
-                script {
-                    app.inside {
-                        sh 'echo "test passed"'
                     }
                 }
             }
         }
+
         stage('Push') {
             steps {
                 script {
@@ -50,17 +42,14 @@ pipeline {
                 echo 'Deploying....'
             }
         }
-        // stage('Clean') {
-        //     steps {
-        //         script {
-        //             try {
-        //                 dockerclean()
-        //             } catch (e) {
-        //                 echo e.getMessage()
-        //             }
-        //         }
-        //     }
-        // }        
+        
+        stage('Clean') {
+            steps {
+                script {
+                    sh "docker rmi -f \$(docker images -q -f reference=*/${REPOSITORY} -f reference=${REPOSITORY} )" 
+                }
+            }
+        }        
     }
 }
 
