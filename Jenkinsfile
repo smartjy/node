@@ -37,7 +37,9 @@ pipeline {
         stage('Clean') {
             steps {
                 try {
-                    sh "docker rmi -f \$( docker images -q --filter=reference=*/${REPOSITORY})"
+                    script {
+                        sh "docker rmi -f \$( docker images -q --filter=reference=*/${REPOSITORY})"
+                    }
                 } catch (e) {
                     echo e.getMessage()
                 }
