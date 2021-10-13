@@ -19,9 +19,7 @@ pipeline {
         // }
         stage('Build') {
             steps {
-                script {
-                    dockerizing()
-                }
+                dockerizing()
             }
         }
         stage('Test') {
@@ -36,7 +34,13 @@ pipeline {
         }
         stage('Clean') {
             steps {
-                dockerclean()
+                script {
+                    try {
+                        dockerclean()
+                    } catch e {
+                        echo e.getMessage()
+                    }
+                }
             }
         }        
     }
