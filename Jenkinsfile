@@ -27,6 +27,13 @@ pipeline {
                 dockerPush()
             }
         }
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'curl -s -d "payload={\"text\":\"slack webhook\"}" "https://hooks.slack.com/services/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"'
+                }
+            }
+        }        
 
         // stage('Clean') {
         //     steps {
@@ -34,64 +41,6 @@ pipeline {
         //     }
         // }    
     }
-    post {
-        success {
-            script {
-                def deployCliList = []
-                for (int i = 0; i < serverList.size(); ++i) {
-                    targetServer = serverList[i]
-                    deployCliList.add([
-                        title: "Deploy to AWS EKS for ` ${targetServer} `",
-                        value: "```kubectl --record set image " + 
-                            "deployment/${targetServer} " +
-                            "${targetServer}=${REGISTRYURL}/REPOSITORY/${targetServer}:test" +
-                            "--namespace default ```",
-                        short: false
-                    ])
-                }
-
-                def notiFields = [
-                    [
-                        title: 'Branch',
-                        value: "${GIT_BRANCH}",
-                        short: true
-                    ],
-                    [
-                        title: 'Last Successful Commit message',
-                        value: "${GIT_BRANCH}",
-                        short: true
-                    ]
-                ]
-
-                if (!deployCliList.isEmpty()) {
-                    notiFields.add(deployCliList)
-                }
-
-                notiFields.add([
-                    [
-                        title: 'check log from k8s pod',
-                        value: "```kubectl --namespace default logs -f {pod name}```",
-                        short: false
-                    ]
-                ])
-
-                notifySlack("", [
-                    [
-                        title: "Build Success ",
-                        title_link: "${BUILD_URL}",
-                        color: "#1E8449",
-                        author_name: "test",
-                        fields: notiFields.flatten(),
-                        footer: "${JOB_NAME}",
-                        ts: System.currentTimeMillis() / 1000
-                    ]
-                ])
-            }
-        }
-        failure {
-            echo 'failure'
-        }
-    }    
 }
 
 def dockerBuild() {
