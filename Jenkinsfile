@@ -48,9 +48,10 @@ pipeline {
 
         stage('Clean') {
             steps {
-                script {
-                    sh "docker rmi -f \$(docker images -q -f reference=*/${REPOSITORY} -f reference=${REPOSITORY} )" 
-                }
+                dockerclean()
+                // script {
+                //     sh "docker rmi -f \$(docker images -q -f reference=*/${REPOSITORY} -f reference=${REPOSITORY} )" 
+                // }
             }
         }        
     }
@@ -58,7 +59,7 @@ pipeline {
 
 def dockerBuild() {
     for ( int i = 0; i < serverList.size(); i++) {
-        targetSvr = serverList[i]
+        def targetSvr = serverList[i]
 
         // docker build 
         dir("${targetSvr}") {
@@ -70,7 +71,7 @@ def dockerBuild() {
 
 def dockerPush() {
     for (int i = 0; i < buildList.size(); i++) {
-        buildApp = buildList[i]
+        def buildApp = buildList[i]
         // docker push
         docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
             buildApp.push("${BRANCH_NAME}-${BUILD_NUMBER}")
