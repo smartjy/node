@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('env') {
             steps {
-                println env
+                sh 'printenv'
             }
         }
         stage('Build') {
