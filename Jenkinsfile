@@ -20,11 +20,11 @@ pipeline {
         // }
         stage('Build') {
             steps {
-                script {
+                // script {
                     dir("sample"){
                         app = docker.build(REPOSITORY, "--no-cache --network host .")
                     }
-                }
+                // }
             }
         }
         stage('Test') {
