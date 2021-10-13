@@ -1,4 +1,5 @@
 serverList = ['sample']
+app = [:]
 pipeline {
     agent {
         label 'agent-leo'
@@ -19,30 +20,45 @@ pipeline {
         // }
         stage('Build') {
             steps {
-                dockerizing()
+                script {
+                    app = docker.build(REPOSITORY, "--no-cache --network host .")
+                }
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                script {
+                    app.inside {
+                        sh 'echo "test passed"'
+                    }
+                }
             }
         }
+        stage('Push') {
+            steps {
+                script {
+                    docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
+                        buildApp.push("${BRANCH_NAME}-${BUILD_NUMBER}")
+                    }
+                }
+            }
+        }        
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
             }
         }
-        stage('Clean') {
-            steps {
-                script {
-                    try {
-                        dockerclean()
-                    } catch (e) {
-                        echo e.getMessage()
-                    }
-                }
-            }
-        }        
+        // stage('Clean') {
+        //     steps {
+        //         script {
+        //             try {
+        //                 dockerclean()
+        //             } catch (e) {
+        //                 echo e.getMessage()
+        //             }
+        //         }
+        //     }
+        // }        
     }
 }
 
