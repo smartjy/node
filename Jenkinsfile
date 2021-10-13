@@ -42,7 +42,7 @@ def dockerizing() {
         // docker build 
         dir("${targetSvr}") {
             // buildApp = docker.build("gorela/test:${BUILD_ID}", "--no-cache --network host .")
-            buildApp = docker.build(--no-cache --network host .)
+            buildApp = docker.build("gorela/test:${BUILD_ID}", "--no-cache --network host .")
         }
         // docker push 
         docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
