@@ -1,3 +1,6 @@
+#!/usr/bin/env groovy
+import groovy.json.JsonOutput
+
 serverList = ['sample']
 buildList = []
 deliveryCli = []
