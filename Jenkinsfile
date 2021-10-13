@@ -45,7 +45,7 @@ pipeline {
                         // author_name: "${gitAuthor}",
                         // fields: notiFields.flatten(),
                         // footer: "${JOB_NAME} - ${buildTagName}",
-                        // ts: System.currentTimeMillis() / 1000
+                        ts: System.currentTimeMillis() / 1000
                     ]
                 ]                
             }
