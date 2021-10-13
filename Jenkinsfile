@@ -3,6 +3,7 @@ pipeline {
     agent {
         label 'agent-leo'
     }
+
     envrionment {
         REGISTRYURL = '653983231979.dkr.ecr.ap-northeast-2.amazonaws.com'
         REGISTRYCREDENTIAL = 'ecr:ap-northeast-2:aws-ecr'
@@ -44,7 +45,6 @@ def dockerBuild() {
         }
         // docker push 
         docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
-
         }
     }
 }
