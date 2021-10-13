@@ -47,7 +47,7 @@ pipeline {
                         // footer: "${JOB_NAME} - ${buildTagName}",
                         ts: System.currentTimeMillis() / 1000
                     ]
-                ]                
+                ])
             }
         }
         failure {
