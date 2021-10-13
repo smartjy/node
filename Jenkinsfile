@@ -36,13 +36,7 @@ pipeline {
         }
         stage('Clean') {
             steps {
-                try {
-                    script {
-                        sh "docker rmi -f \$( docker images -q --filter=reference=*/${REPOSITORY})"
-                    }
-                } catch (e) {
-                    echo e.getMessage()
-                }
+                cleaning()
             }
         }        
     }
@@ -61,4 +55,8 @@ def dockerizing() {
             buildApp.push("${BRANCH_NAME}-${BUILD_NUMBER}")
         }
     }
+}
+
+def cleaning() {
+   sh "docker rmi -f \$( docker images -q --filter=reference=*/${REPOSITORY})" 
 }
