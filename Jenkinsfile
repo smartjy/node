@@ -4,7 +4,7 @@ pipeline {
         label 'agent-leo'
     }
 
-    envrionment {
+    environment {
         REGISTRYURL = '653983231979.dkr.ecr.ap-northeast-2.amazonaws.com'
         REGISTRYCREDENTIAL = 'ecr:ap-northeast-2:aws-ecr'
     }
