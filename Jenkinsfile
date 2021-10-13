@@ -21,7 +21,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    app = docker.build(REPOSITORY, "--no-cache --network host .")
+                    dir('sample'){
+                        app = docker.build(REPOSITORY, "--no-cache --network host .")
+                    }
                 }
             }
         }
@@ -38,7 +40,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://${REGISTRYURL}", REGISTRYCREDENTIAL) {
-                        buildApp.push("${BRANCH_NAME}-${BUILD_NUMBER}")
+                        app.push("${BRANCH_NAME}-${BUILD_NUMBER}")
                     }
                 }
             }
